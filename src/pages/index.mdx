@@ -5,7 +5,7 @@ description: Lab 2201 - From Zero to Hero MicroProfile application creation usin
 
 <PageDescription>
 
-TODO: Abstract
+You might have some concerns with Cloud deployments such as serviceability, configuration, development, testing, and more. Luckily, Eclipse MicroProfile addresses these concerns. MicroProfile defines cloud native API standards for developing portable microservices which function natively in the Cloud. IBM WebSphere Liberty offers a first-class implementation for MicroProfile. MicroProfile application development is even easier with Generative Artificial Intelligence (GenAI). This hands-on session shows how to use GenAI to help with MicroProfile application creation on Liberty. After this session, you should be able to use MicroProfile in your application with great confidence and significantly improved productivity.
 
 </PageDescription>
 
@@ -40,9 +40,223 @@ The provision of the information contained herein is not intended to, and does n
 IBM, the IBM logo, and ibm.com are trademarks of International Business Machines Corporation, registered in many jurisdictions worldwide. Other product and service names might be trademarks of IBM or other companies. A current list of IBM trademarks is available on the Web at “Copyright and trademark information” at
 <https://www.ibm.com/legal/copyright-trademark>.
 
-# Lab Guide
+# Background
 
-TODO
+## IBM WebSphere Liberty
+
+[IBM WebSphere Liberty](https://www.ibm.com/websphere/liberty) is a next-generation Java application runtime that accelerates the delivery of cloud-native applications. WebSphere Liberty is largely based on the open-source [Open Liberty](https://github.com/OpenLiberty/open-liberty) project so some links and examples may point to Open Liberty documentation.
+
+## Microservices
+
+One of the transformative architectures that the cloud has accelerated is a [microservices architecture](https://www.ibm.com/topics/microservices). The idea is that once it's easier to build virtualized and isolated components, this allows breaking up traditional "monolith" applications into smaller and more nimble applications that talk to each other for faster development iteration and independent scaling capabilities. New Java application development standards have been developed to support the microservices architectural style and one such open source standard supported by IBM is [Eclipse MicroProfile](https://microprofile.io/). Liberty is one application server that implements the MicroProfile standard.
+
+## IBM watsonx Code Assistant
+
+[IBM watsonx Code Assistant](https://www.ibm.com/products/watsonx-code-assistant) is a Large Language Model (LLM)-based generative AI based on IBM's Granite foundation models. [IBM watsonx Code Assistant for Enterprise Java Applications](https://www.ibm.com/products/watsonx-code-assistant-for-enterprise-java-applications) (WCA4EJA) is tuned specifically for Enterprise Java code. WCA4EJA is the main tool we will be using in this lab and it has capabilities to [generate code, explain code, generate tests, and more](https://www.ibm.com/blog/announcement/watsonx-code-assistant-java/).
+
+![](../images/media/keycaps.png)
+
+### WCA4EJA Preview
+
+At the time of this writing, a preview version of WCA4EJA is available for download for Visual Studio Code and Eclipse using the following link. The VS Code extension is already downloaded and installed in the lab image so this is only for reference if you'd like to explore more or try this out after the lab: <https://early-access.ibm.com/software/support/trial/cst/programwebsite.wss?siteId=2044&tabId=5712&p=&h=null>
+
+The AI model used is the IBM Granite 20B enterprise Java code instruct model. This model was trained in two phases. In the first phase, the model was trained on 3 to 4 trillion tokens sourced from 116 programming languages, ensuring a comprehensive understanding of programming languages and syntax. In the second phase, the model was additionally trained on 500 billion tokens with a carefully designed mixture of high-quality data from code and natural language domains to improve the model's ability to reason. For more information about the IBM Granite 20B enterprise Java code instruct model, see [Granite Code Models: A Family of Open Foundation Models for Code Intelligence](https://arxiv.org/pdf/2405.04324).
+
+Training of the IBM Granite 20B enterprise Java code instruct model included datasets for Jakarta EE, MicroProfile, and other enterprise Java repositories such as Open Liberty GitHub repositories.
+
+The context window for the IBM Granite 20B enterprise Java code instruct model is 8192 tokens.
+
+The model uses prompts for inference only and does not store any client prompts. None of your data is used to train the model in realtime or stored and used offline.
+
+#### IBM Cloud Transformation Advisor
+
+You may be familiar with the [IBM Cloud Transformation Advisor](https://www.ibm.com/products/cloud-pak-for-applications/transformation-advisor) tool which helps evaluate the transformation and modernization of code from older versions of Java and traditional programming models such as WebSphere Application Server traditional to platforms such as Liberty.
+
+WCA4EJA includes the capabilities of Transformation Advisor and uses automation and generative AI to enact its recommendations.
+
+#### Feedback
+
+You can provide feedback on your experiences to the lab proctor, including suggestions for when your results don't match your expectations.
+
+# Running the Lab
+
+## Lab
+
+This lab will go through the process of running IBM Watson Code Assistant for Enterprise Java Applications with a focus on Eclipse MicroProfile applications. Additional "learn more" boxes may be peppered throughput the lab:
+
+<InlineNotification>
+
+These "learn more" boxes will be peppered throughout the lab steps to explain steps in more detail. We encourage you to read these or at least skim them to get a detailed understanding how everything works.
+
+</InlineNotification>
+
+Let's get started!
+
+### Access the Virtual Machine
+
+1.  The first screen you'll see is a summary of the virtual machines in the lab:
+    
+    ![](../images/media/image5.png)
+
+2.  Click on the "Red Hat" logo on the computer screen to enter the virtual machine inside your browser:
+    
+    ![](../images/media/image6.png)
+
+3.  Clicking on the "Red Hat" logo will open a new browser tab to the client virtual machine.
+
+4.  If you see the following screen, then the screen is locked. Click on **admin** and enter the password **IBMDem0s** (with a **zero** rather than an O) to login:
+    
+    ![](../images/media/image7.png)
+    
+    ![](../images/media/image8.png)
+
+5.  If you see the following screen then you are already logged in:
+    
+    ![](../images/media/image9.png)
+
+### Copy and Pasting
+
+You may copy and paste from this lab guide into the client virtual machine:
+
+1.  Ensure the target of the paste has focus in the virtual machine (e.g. a terminal window).
+
+2.  Click the Send Text icon at the top of the client virtual machine browser tab:
+    
+    ![](../images/media/image10.png)
+
+3.  Paste something into the textbox and then click Send Text:
+    
+    ![](../images/media/image11.png)
+
+4.  Double check that the text has pasted correctly as we have seen cases where not all characters were sent.
+
+### Open Visual Studio Code
+
+We will use a pre-installed watsonx extension in Visual Studio Code which is a common code editor.
+
+1.  Click on Activities in the top left:
+    
+    ![](../images/media/image12.png)
+
+2.  Click on the Visual Studio Code (vscode) icon to launch it:
+    
+    ![](../images/media/image13.png)
+
+3.  The watsonx Code Assistant for Enterprise Java Applications vscode extension has been pre-installed. Either click the wastonx icon on the left-hand side or click on the "Sign in with API Key" button if it is still visible (this goes to the same place as the icon on the left side):
+
+    ![](../images/media/image14.png)
+
+4.  Click "Sign in with API Key":
+    
+    ![](../images/media/image15.png)
+
+5.  Under normal usage, at this point you will follow instructions to create an API Key. For the purposes of this lab, you will be provided an API key. Ask a lab proctor in the room for an API key. This lab is not supported outside a proctor-led lab.
+
+6.  Click "Allow" to start the process:
+    
+    ![](../images/media/image16.png)
+
+7.  An input box shows up at the top of vscode. Enter the API key that you've been given and press Enter:
+    
+    ![](../images/media/image17.png)
+
+8.  After a few moments, the watsonx extension should show an updated welcome screen:
+    
+    ![](../images/media/image18.png)
+
+### Generate a REST endpoint
+
+First, let's get our feet wet by asking WCA4EJA to explain a Java class file. The lab image contains an Eclipse MicroProfile starter project which we will open and explore:
+
+1. Click on the file explorer in the top left of VS Code and then expand the `app-name` project and open `src/main/java/com/demo/rest/RestApplication.java`:
+    
+   ![](../images/media/openrestapp.png)
+
+1. WCA4EJA adds Explain, Document, and Unit Test buttons above Java classes and methods:
+    
+   ![](../images/media/vscodeannotations.png)
+
+1. Click the Explain button above the `RestApplication` class. The WCA4EJA extension window will open on the left side and send a request to the watsonx service to explain the selected code:
+    
+   ![](../images/media/explainrestapp.png)
+
+1. Next, click on the Document button above the `RestApplication` class. The WCA4EJA extension window will open on the left side and send a request to the watsonx service to generation code documentation for the selected class. If you are happy with the generated documentation code, you would then copy and paste the code into the file editor on the right.
+    
+   ![](../images/media/document.png)
+
+### Eclipse MicroProfile and GenAI
+
+Now let's get to the heart of the lab and use GenAI to generate Eclipse MicroProfile code. Let's create a simple Eclipse MicroProfile REST endpoint which will generate a weather forecast for a latitude/longitude point.
+
+First, we need to explore how to use WCA4EJA optimally. WCA4EJA has the concept of chats. The idea of a chat is that it's something like a memory of the GenAI which gives context to the next prompt. By default, the option "Use most recent message as context" is selected which means that the last result will be used as as part of the new prompt:
+
+![](../images/media/mostrecent.png)
+
+Since we are starting a new task of generating a new class, you can either start a new chat using the plus button at the top or switch the option to "Do not use history as context":
+
+![](../images/media/nohistory.png)
+
+The idea is that chats are logical groupings of GenAI activities and they can be used to build upon past results. At the top, next to the option to start a new chat, you can also list all existing chats in case you want to switch contexts:
+
+![](../images/media/chats.png)
+
+Now that you have either started a new chat, or selected not to use the past history, enter a prompt such as the following and click the execute button:
+
+> Please create an Eclipse MicroProfile class that receives requests at the path weather. The class should have a method named forecast which receives HTTP GET requests and produces a JSON response. The forecast method should take a double latitude and a double longitude as input.
+
+![](../images/media/prompt1.png)
+
+After some time, WCA4EJA will respond with example code and a short explanation. We are already seeing the value of watsonx and WCA4EJA as this basic boilerplate code saves us a lot of time in remembering how to construct REST endpoints, accept parameters, and so on:
+
+![](../images/media/answer1.png)
+
+You can now try different things and interact with watsonx. For example, we didn't provide much context about our application, so the generated code is in the `com.example.weather` package; however, our application is in the `com.demo.rest` package. Now you can switch the option back to "Use most recent message as context" and then execute the following prompt:
+
+> Change the package to com.demo.rest
+
+watsonx will generate the same code as before but the package is now correct:
+
+![](../images/media/answer1b.png)
+
+Now let's generate code that calls the [Weather.gov API](https://www.weather.gov/documentation/services-web-api) using the latitude and longitude using the following prompt:
+
+> Create a String named url that starts with "https://api.weather.gov/points/" and appends the latitude followed by the string "," and followed by the longitude. Then create a Jakarta REST ClientBuilder passing the URL to the target method and execute the get method. Read the resulting Response as a String entity and parse it using Json.createReader.
+
+This results in the following output which is a good starting point for calling the Weather.gov API:
+
+![](../images/media/json.png)
+
+Now let's combine all of this code into a new source file. Switch to the file explorer, and right click on the `rest` folder and click `New File...` and enter `WeatherService.java`:
+
+![](../images/media/newfile.png)
+
+Switch back to the WCA4EJA view and copy and paste the various answers into `WeatherService.java` and you should end up with something like the following:
+
+![](../images/media/weatherservicecode.png)
+
+This would take some additional effort but watsonx has saved us a lot of time in creating the basic scaffolding of what we need.
+
+Clicking the Document button on the `forecast` method quickly generates simple documentation:
+
+![](../images/media/documentforecast.png)
+
+### Generate a health check
+
+Another common feature of Eclipse MicroProfile is to generate a health check which tells systems such as Kubernetes and other monitoring systems whether the application is available.
+
+Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
+
+> Generate a Java class which is an Eclipse MicroProfile health check which creates a Jakarta REST ClientBuilder passing the URL of "https://api.weather.gov/" to the target method and executing the get method. If the String result of the call includes "OK" then return UP for the health check. Otherwise, return DOWN.
+
+The resulting health check can use some clean up but it saves a lot of time and gets things mostly correct:
+
+![](../images/media/healthcheck.png)
+
+Note that in some cases you may receive an error from watsonx:
+
+> Generated code not shown due to unmet requirements. Please try again.
+
+In some cases, repeating the same prompt will work and in other cases you may need to modify the prompt a little bit to avoid this error.
 
 ### Conclusion
 
