@@ -68,6 +68,21 @@ The context window for the IBM Granite 20B enterprise Java code instruct model i
 
 The model uses prompts for inference only and does not store any client prompts. None of your data is used to train the model in realtime or stored and used offline.
 
+#### Limitations
+
+At the time of this writing, WCA4EJA has some limitations:
+
+1. Only the Eclipse IDE is available to modernize your applications.
+1. Only single module Maven WAR applications are supported. Although multi-module projects are not supported, you can point to a WAR module in a multi-module project.
+1. Only Maven can be used to build applications.
+1. The following use cases are supported only on macOS and Windows:
+    1. Generating tests for your Java application with the Visual Studio Code extension
+    1. Generating JUnit tests for your Java application with the Eclipse IDE
+    1. Explaining code changes
+    1. Explaining methods
+
+For the above and other reasons, this lab does not explore all of the features of WCA4EJA; however, if you have the opportunity, we recommend that you check out Lab 1596: Hands-on workshop on AI in Java application development. Lab 1596 explores all of the features of WC4EJA.
+
 #### IBM Cloud Transformation Advisor
 
 You may be familiar with the [IBM Cloud Transformation Advisor](https://www.ibm.com/products/cloud-pak-for-applications/transformation-advisor) tool which helps evaluate the transformation and modernization of code from older versions of Java and traditional programming models such as WebSphere Application Server traditional to platforms such as Liberty.
@@ -240,9 +255,47 @@ Clicking the Document button on the `forecast` method quickly generates simple d
 
 ![](../images/media/documentforecast.png)
 
+### Generate MicroProfile Configuration code
+
+[Eclipse MicroProfile Configuration](https://microprofile.io/specifications/microprofile-config/) (mpConfig) is a flexible way to configure an application using Java system properties, environment variables, properties files, and custom sources. Let's enhance our `WeatherService.java` to add some MicroProfile configuration elements to make the application more flexible.
+
+Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
+
+Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
+
+> Add an Eclipse MicroProfile Configuration field named baseURL wich a default String value of "https://api.weather.gov/points/" and then use this field in the forecast method.
+
+Example result:
+
+![](../images/media/addconfig.png)
+
+Notice that WCA4EJA was able to modify the class and augment it with the requested prompt. An additional `import` statement was added, the MicroProfile configuration field was added, and the `forecast` method was modified to use the new field.
+
+Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
+
+### Generate MicroProfile metrics code
+
+[Eclipse MicroProfile Metrics](https://microprofile.io/specifications/microprofile-metrics/) (mpMetrics) provides a standardized way to publish metrics to determine health in detail and generate capacity planning data. Let's enhance our `WeatherService.java` to add some MicroProfile metrics elements to make the application easier to monitor.
+
+Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
+
+Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
+
+> Add Eclipse MicroProfile Metrics Timed and Counted annotations to the forecast method with a name of forecastTime.
+
+Example result:
+
+![](../images/media/metrics.png)
+
+Notice that WCA4EJA was able to modify the class and augment it with the requested prompt. Additional `import` statements were added and it was smart enough to give different names to the different annotations.
+
+Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
+
+If you'd like to learn more about MicroProfile Metrics in general, we recommend the following Liberty guide: <https://openliberty.io/guides/microprofile-metrics.html>
+
 ### Generate a health check
 
-Another common feature of Eclipse MicroProfile is to generate a health check which tells systems such as Kubernetes and other monitoring systems whether the application is available.
+A common feature of Eclipse MicroProfile is to generate a health check which tells systems such as Kubernetes and other monitoring systems whether the application is available.
 
 Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
 
