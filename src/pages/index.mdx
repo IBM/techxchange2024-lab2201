@@ -68,6 +68,12 @@ The context window for the IBM Granite 20B enterprise Java code instruct model i
 
 The model uses prompts for inference only and does not store any client prompts. None of your data is used to train the model in realtime or stored and used offline.
 
+#### IBM Cloud Transformation Advisor
+
+You may be familiar with the [IBM Cloud Transformation Advisor](https://www.ibm.com/products/cloud-pak-for-applications/transformation-advisor) tool which helps evaluate the transformation and modernization of code from older versions of Java and traditional programming models such as WebSphere Application Server traditional to platforms such as Liberty.
+
+WCA4EJA includes the capabilities of Transformation Advisor and uses automation and generative AI to enact its recommendations.
+
 #### Limitations
 
 At the time of this writing, WCA4EJA has some limitations:
@@ -82,12 +88,6 @@ At the time of this writing, WCA4EJA has some limitations:
     1. Explaining methods
 
 For the above and other reasons, this lab does not explore all of the features of WCA4EJA; however, if you have the opportunity, we recommend that you check out Lab 1596: Hands-on workshop on AI in Java application development. Lab 1596 explores all of the features of WC4EJA.
-
-#### IBM Cloud Transformation Advisor
-
-You may be familiar with the [IBM Cloud Transformation Advisor](https://www.ibm.com/products/cloud-pak-for-applications/transformation-advisor) tool which helps evaluate the transformation and modernization of code from older versions of Java and traditional programming models such as WebSphere Application Server traditional to platforms such as Liberty.
-
-WCA4EJA includes the capabilities of Transformation Advisor and uses automation and generative AI to enact its recommendations.
 
 #### Feedback
 
@@ -179,7 +179,7 @@ We will use a pre-installed watsonx extension in Visual Studio Code which is a c
     
     ![](../images/media/image18.png)
 
-### Generate a REST endpoint
+### Explain a Java class
 
 First, let's get our feet wet by asking WCA4EJA to explain a Java class file. The lab image contains an Eclipse MicroProfile starter project which we will open and explore:
 
@@ -201,9 +201,9 @@ First, let's get our feet wet by asking WCA4EJA to explain a Java class file. Th
 
 ### Eclipse MicroProfile and GenAI
 
-Now let's get to the heart of the lab and use GenAI to generate Eclipse MicroProfile code. Let's create a simple Eclipse MicroProfile REST endpoint which will generate a weather forecast for a latitude/longitude point.
+Now let's get to the heart of the lab and use GenAI to generate Eclipse MicroProfile code. Let's start with a simple Eclipse MicroProfile REST endpoint which will generate a weather forecast for a latitude/longitude point. REST is an architectural style for web service calls and it's implemented in MicroProfile using [Jakarta Enterprise Edition RESTful Web Service](https://en.wikipedia.org/wiki/Jakarta_RESTful_Web_Services).
 
-First, we need to explore how to use WCA4EJA optimally. WCA4EJA has the concept of chats. The idea of a chat is that it's something like a memory of the GenAI which gives context to the next prompt. By default, the option "Use most recent message as context" is selected which means that the last result will be used as as part of the new prompt:
+First, we will explore how to use WCA4EJA. WCA4EJA has the concept of chats. The idea of a chat is that it's something like a memory of the GenAI which gives context to the next prompt. By default, the option "Use most recent message as context" is selected which means that the last result will be used as as part of the new prompt:
 
 ![](../images/media/mostrecent.png)
 
@@ -215,9 +215,9 @@ The idea is that chats are logical groupings of GenAI activities and they can be
 
 ![](../images/media/chats.png)
 
-Now that you have either started a new chat, or selected not to use the past history, enter a prompt such as the following and click the execute button:
+Now that you have either started a new chat, or selected not to use the past history, copy and paste a prompt such as the following and click the execute button:
 
-> Please create an Eclipse MicroProfile class that receives requests at the path weather. The class should have a method named forecast which receives HTTP GET requests and produces a JSON response. The forecast method should take a double latitude and a double longitude as input.
+> Create an Eclipse MicroProfile class that receives requests at the path weather. The class should have a method named forecast which receives HTTP GET requests and produces a JSON response. The forecast method should take a double latitude and a double longitude as input.
 
 ![](../images/media/prompt1.png)
 
@@ -225,15 +225,33 @@ After some time, WCA4EJA will respond with example code and a short explanation.
 
 ![](../images/media/answer1.png)
 
+<InlineNotification>
+
+As you may have noticed by the `import` statements, parts of Eclipse MicroProfile such as REST support are implemented by Jakarta Enterprise Edition (`import jakarta...`) or Java Enterprise Edition (`import javax...`), so Eclipse MicroProfile stands on top of some of the leading Java enterprise standards.
+
+</InlineNotification>
+
 You can now try different things and interact with watsonx. For example, we didn't provide much context about our application, so the generated code is in the `com.example.weather` package; however, our application is in the `com.demo.rest` package. Now you can switch the option back to "Use most recent message as context" and then execute the following prompt:
 
 > Change the package to com.demo.rest
 
 watsonx will generate the same code as before but the package is now correct:
 
+![](../images/media/changepackage.png)
+
 ![](../images/media/answer1b.png)
 
-Now let's generate code that calls the [Weather.gov API](https://www.weather.gov/documentation/services-web-api) using the latitude and longitude using the following prompt:
+Switch to the file explorer, and right click on the `rest` folder and click `New File...` and enter `WeatherService.java`:
+
+![](../images/media/newfile.png)
+
+Select all of the generated code from WCA4EJA (there is a copy-to-clipboard button at the top right of the code output) and paste into `WeatherService.java` in the file editor.
+
+In the VS Code editor for `WeatherService.java`, select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
+
+![](../images/media/selectall.png)
+
+Now let's generate the implementation of the web service which calls the [Weather.gov API](https://www.weather.gov/documentation/services-web-api) using the latitude and longitude using the following prompt:
 
 > Create a String named url that starts with "https://api.weather.gov/points/" and appends the latitude followed by the string "," and followed by the longitude. Then create a Jakarta REST ClientBuilder passing the URL to the target method and execute the get method. Read the resulting Response as a String entity and parse it using Json.createReader.
 
@@ -241,23 +259,21 @@ This results in the following output which is a good starting point for calling 
 
 ![](../images/media/json.png)
 
-Now let's combine all of this code into a new source file. Switch to the file explorer, and right click on the `rest` folder and click `New File...` and enter `WeatherService.java`:
-
-![](../images/media/newfile.png)
-
 Switch back to the WCA4EJA view and copy and paste the various answers into `WeatherService.java` and you should end up with something like the following:
 
 ![](../images/media/weatherservicecode.png)
 
-This would take some additional effort but watsonx has saved us a lot of time in creating the basic scaffolding of what we need.
+Additional code would be needed for a full implementation but watsonx has saved us a lot of time in creating the basic scaffolding of what we need.
 
-Clicking the Document button on the `forecast` method quickly generates simple documentation:
+Clicking the Document button on the `forecast` method quickly generates simple documentation which can be copy/pasted into the editor:
 
 ![](../images/media/documentforecast.png)
 
+If you'd like to learn more about MicroProfile RESTful web services in general, we recommend the following Liberty guide: <https://openliberty.io/guides/rest-intro.html>
+
 ### Generate MicroProfile Configuration code
 
-[Eclipse MicroProfile Configuration](https://microprofile.io/specifications/microprofile-config/) (mpConfig) is a flexible way to configure an application using Java system properties, environment variables, properties files, and custom sources. Let's enhance our `WeatherService.java` to add some MicroProfile configuration elements to make the application more flexible.
+[Eclipse MicroProfile Configuration](https://download.eclipse.org/microprofile/microprofile-config-3.0/microprofile-config-spec-3.0.html) (mpConfig) is a flexible way to configure an application using Java system properties, environment variables, properties files, and custom sources. Let's enhance our `WeatherService.java` to add some MicroProfile configuration elements to make the application more flexible.
 
 Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
 
@@ -273,9 +289,11 @@ Notice that WCA4EJA was able to modify the class and augment it with the request
 
 Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
 
+If you'd like to learn more about MicroProfile Configuration in general, we recommend the following Liberty guide: <https://openliberty.io/guides/microprofile-config-intro.html>
+
 ### Generate MicroProfile metrics code
 
-[Eclipse MicroProfile Metrics](https://microprofile.io/specifications/microprofile-metrics/) (mpMetrics) provides a standardized way to publish metrics to determine health in detail and generate capacity planning data. Let's enhance our `WeatherService.java` to add some MicroProfile metrics elements to make the application easier to monitor.
+[Eclipse MicroProfile Metrics](https://download.eclipse.org/microprofile/microprofile-metrics-5.0.0/microprofile-metrics-spec-5.0.0.html) (mpMetrics) provides a standardized way to publish metrics to determine health in detail and generate capacity planning data. Let's enhance our `WeatherService.java` to add some MicroProfile metrics elements to make the application easier to monitor.
 
 Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
 
@@ -287,7 +305,7 @@ Example result:
 
 ![](../images/media/metrics.png)
 
-Notice that WCA4EJA was able to modify the class and augment it with the requested prompt. Additional `import` statements were added and it was smart enough to give different names to the different annotations.
+Notice that WCA4EJA was able to modify the class and augment it with the requested prompt. Additional `import` statements were added, `@Timed` and `@Counted` annotations were added to the method, and it was smart enough to give different names to the different annotations.
 
 Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
 
