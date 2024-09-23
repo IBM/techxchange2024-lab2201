@@ -5,7 +5,7 @@ description: Lab 2201 - From Zero to Hero MicroProfile application creation usin
 
 <PageDescription>
 
-You might have some concerns with Cloud deployments such as serviceability, configuration, development, testing, and more. Luckily, Eclipse MicroProfile addresses these concerns. MicroProfile defines cloud native API standards for developing portable microservices which function natively in the Cloud. IBM WebSphere Liberty offers a first-class implementation for MicroProfile. MicroProfile application development is even easier with Generative Artificial Intelligence (GenAI). This hands-on session shows how to use GenAI to help with MicroProfile application creation on Liberty. After this session, you should be able to use MicroProfile in your application with great confidence and significantly improved productivity.
+You might have some concerns with Cloud deployments such as serviceability, configuration, development, testing, and more. Luckily, MicroProfile addresses these concerns. MicroProfile defines cloud native API standards for developing portable microservices which function natively in the Cloud. IBM WebSphere Liberty offers a first-class implementation for MicroProfile. MicroProfile application development is even easier with Generative Artificial Intelligence (GenAI). This hands-on session shows how to use GenAI to help with MicroProfile application creation on Liberty. After this session, you should be able to use MicroProfile in your application with great confidence and significantly improved productivity.
 
 </PageDescription>
 
@@ -48,7 +48,7 @@ IBM, the IBM logo, and ibm.com are trademarks of International Business Machines
 
 ## Microservices
 
-One of the transformative architectures that the cloud has accelerated is a [microservices architecture](https://www.ibm.com/topics/microservices). The idea is that once it's easier to build virtualized and isolated components, this allows breaking up traditional "monolith" applications into smaller and more nimble applications that talk to each other for faster development iteration and independent scaling capabilities. New Java application development standards have been developed to support the microservices architectural style and one such open source standard supported by IBM is [Eclipse MicroProfile](https://microprofile.io/). Liberty is one application server that implements the MicroProfile standard.
+One of the transformative architectures that the cloud has accelerated is a [microservices architecture](https://www.ibm.com/topics/microservices). The idea is that once it's easier to build virtualized and isolated components, this allows breaking up traditional "monolith" applications into smaller and more nimble applications that talk to each other for faster development iteration and independent scaling capabilities. New Java application development standards have been developed to support the microservices architectural style and one such open source standard supported by IBM is [MicroProfile](https://microprofile.io/). Liberty is one application server that implements the MicroProfile standard.
 
 ## IBM watsonx Code Assistant
 
@@ -97,7 +97,7 @@ You can provide feedback on your experiences to the lab proctor, including sugge
 
 ## Lab
 
-This lab will go through the process of running IBM Watson Code Assistant for Enterprise Java Applications with a focus on Eclipse MicroProfile applications. Additional "learn more" boxes may be peppered throughput the lab:
+This lab will go through the process of running IBM Watson Code Assistant for Enterprise Java Applications with a focus on MicroProfile applications. Additional "learn more" boxes may be peppered throughput the lab:
 
 <InlineNotification>
 
@@ -181,7 +181,7 @@ We will use a pre-installed watsonx extension in Visual Studio Code which is a c
 
 ### Explain a Java class
 
-First, let's get our feet wet by asking WCA4EJA to explain a Java class file. The lab image contains an Eclipse MicroProfile starter project which we will open and explore:
+First, let's get our feet wet by asking WCA4EJA to explain a Java class file. The lab image contains an MicroProfile starter project which we will open and explore:
 
 1. Click on the file explorer in the top left of VS Code and then expand the `app-name` project and open `src/main/java/com/demo/rest/RestApplication.java`:
     
@@ -199,9 +199,9 @@ First, let's get our feet wet by asking WCA4EJA to explain a Java class file. Th
     
    ![](../images/media/document.png)
 
-### Eclipse MicroProfile and GenAI
+### MicroProfile and GenAI
 
-Now let's get to the heart of the lab and use GenAI to generate Eclipse MicroProfile code. Let's start with a simple Eclipse MicroProfile REST endpoint which will generate a weather forecast for a latitude/longitude point. REST is an architectural style for web service calls and it's implemented in MicroProfile using [Jakarta Enterprise Edition RESTful Web Service](https://en.wikipedia.org/wiki/Jakarta_RESTful_Web_Services).
+Now let's get to the heart of the lab and use GenAI to generate MicroProfile code. Let's start with a simple MicroProfile REST endpoint which will generate a weather forecast for a latitude/longitude point. REST is an architectural style for web service calls and it's implemented in MicroProfile using [Jakarta Enterprise Edition RESTful Web Service](https://en.wikipedia.org/wiki/Jakarta_RESTful_Web_Services).
 
 First, we will explore how to use WCA4EJA. WCA4EJA has the concept of chats. The idea of a chat is that it's something like a memory of the GenAI which gives context to the next prompt. By default, the option "Use most recent message as context" is selected which means that the last result will be used as as part of the new prompt:
 
@@ -217,7 +217,7 @@ The idea is that chats are logical groupings of GenAI activities and they can be
 
 Now that you have either started a new chat, or selected not to use the past history, copy and paste a prompt such as the following and click the execute button:
 
-> Create an Eclipse MicroProfile class that receives requests at the path weather. The class should have a method named forecast which receives HTTP GET requests and produces a JSON response. The forecast method should take a double latitude and a double longitude as input.
+> Create an MicroProfile class that receives requests at the path weather. The class should have a method named forecast which receives HTTP GET requests and produces a JSON response. The forecast method should take a double latitude and a double longitude as input.
 
 ![](../images/media/prompt1.png)
 
@@ -227,7 +227,7 @@ After some time, WCA4EJA will respond with example code and a short explanation.
 
 <InlineNotification>
 
-As you may have noticed by the `import` statements, parts of Eclipse MicroProfile such as REST support are implemented by Jakarta Enterprise Edition (`import jakarta...`) or Java Enterprise Edition (`import javax...`), so Eclipse MicroProfile stands on top of some of the leading Java enterprise standards.
+As you may have noticed by the `import` statements, parts of MicroProfile such as REST support are implemented by Jakarta Enterprise Edition (`import jakarta...`) or Java Enterprise Edition (`import javax...`), so MicroProfile stands on top of some of the leading Java enterprise standards.
 
 </InlineNotification>
 
@@ -273,13 +273,13 @@ If you'd like to learn more about MicroProfile RESTful web services in general, 
 
 ### Generate MicroProfile Configuration code
 
-[Eclipse MicroProfile Configuration](https://download.eclipse.org/microprofile/microprofile-config-3.0/microprofile-config-spec-3.0.html) (mpConfig) is a flexible way to configure an application using Java system properties, environment variables, properties files, and custom sources. Let's enhance our `WeatherService.java` to add some MicroProfile configuration elements to make the application more flexible.
+[MicroProfile Configuration](https://download.eclipse.org/microprofile/microprofile-config-3.0/microprofile-config-spec-3.0.html) (mpConfig) is a flexible way to configure an application using Java system properties, environment variables, properties files, and custom sources. Let's enhance our `WeatherService.java` to add some MicroProfile configuration elements to make the application more flexible.
 
 Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
 
 Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
 
-> Add an Eclipse MicroProfile Configuration field named baseURL wich a default String value of "https://api.weather.gov/points/" and then use this field in the forecast method.
+> Add an MicroProfile Configuration field named baseURL wich a default String value of "https://api.weather.gov/points/" and then use this field in the forecast method.
 
 Example result:
 
@@ -293,13 +293,13 @@ If you'd like to learn more about MicroProfile Configuration in general, we reco
 
 ### Generate MicroProfile metrics code
 
-[Eclipse MicroProfile Metrics](https://download.eclipse.org/microprofile/microprofile-metrics-5.0.0/microprofile-metrics-spec-5.0.0.html) (mpMetrics) provides a standardized way to publish metrics to determine health in detail and generate capacity planning data. Let's enhance our `WeatherService.java` to add some MicroProfile metrics elements to make the application easier to monitor.
+[MicroProfile Metrics](https://download.eclipse.org/microprofile/microprofile-metrics-5.0.0/microprofile-metrics-spec-5.0.0.html) (mpMetrics) provides a standardized way to publish metrics to determine health in detail and generate capacity planning data. Let's enhance our `WeatherService.java` to add some MicroProfile metrics elements to make the application easier to monitor.
 
 Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
 
 Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
 
-> Add Eclipse MicroProfile Metrics Timed and Counted annotations to the forecast method with a name of forecastTime.
+> Add MicroProfile Metrics Timed and Counted annotations to the forecast method with a name of forecastTime.
 
 Example result:
 
@@ -313,19 +313,73 @@ If you'd like to learn more about MicroProfile Metrics in general, we recommend 
 
 ### Generate a health check
 
-A common feature of Eclipse MicroProfile is to generate a health check which tells systems such as Kubernetes and other monitoring systems whether the application is available.
+[MicroProfile Health](https://download.eclipse.org/microprofile/microprofile-health-4.0.1/microprofile-health-spec-4.0.1.html) (mpHealth) provides standardized `/health` HTTP endpoints that determine whether an application is ready to serve user traffic either through basic built-in heuristics (e.g. the application has started) or through custom application code. This endpoint is particularly useful in Kubernetes environments to help its routing infrastructure know when to send traffic to a pod and/or kill a pod; however, it is also useful in non-Kubernetes environments.
 
 Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
 
-> Generate a Java class which is an Eclipse MicroProfile health check which creates a Jakarta REST ClientBuilder passing the URL of "https://api.weather.gov/" to the target method and executing the get method. If the String result of the call includes "OK" then return UP for the health check. Otherwise, return DOWN.
+> Generate a Java class which is an MicroProfile health check which creates a Jakarta REST ClientBuilder passing the URL of "https://api.weather.gov/" to the target method and executing the get method. If the String result of the call includes "OK" then return UP for the health check. Otherwise, return DOWN.
 
-The resulting health check can use some clean up but it saves a lot of time and gets things mostly correct:
+The resulting health check can use some clean up but it saves a lot of time and gets things mostly correct. In this example, the `if` check is wrong as it's checking for `"UP"` instead of `"OK"` as requested in the prompt. This shows the importance of carefully reviewing code generated by GenAI systems and this applies to all such systems.
 
 ![](../images/media/healthcheck.png)
 
+If you'd like to learn more about MicroProfile Health in general, we recommend the following Liberty guide: <https://openliberty.io/guides/microprofile-health.html>
+
+### Generate MicroProfile fault tolerance code
+
+[MicroProfile Fault Tolerance](https://download.eclipse.org/microprofile/microprofile-fault-tolerance-4.1/microprofile-fault-tolerance-spec-4.1.html) (mpMetrics) provides a standardized way to help applications fail fast and recover smoothly by guiding how and when certain requests occur and by providing fallback strategies to handle common errors.
+
+Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
+
+Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
+
+> Add the MicroProfile Fault Tolerance Timeout annotation to the forecast method with a value of 300 milliseconds.
+
+Example result:
+
+![](../images/media/timeout.png)
+
+Notice that WCA4EJA was able to modify the class and augment it with the requested prompt. An additional `import` statement was added and an `@Timeout` annotation was added to the method.
+
+Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
+
+#### Fault tolerance circuit breaker
+
+Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
+
+Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
+
+For the prompt, enter something like the following:
+
+> Add the MicroProfile Fault circuit breaker with a success threshold of 10, request volume threshold of 4, failure ratio of 0.75, and delay of 1000 to the forecast method.
+
+Example result:
+
+![](../images/media/circuitbreaker.png)
+
+Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
+
+#### Fault tolerance circuit bulkhead
+
+Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA4EJA prompt.
+
+Start a new chat in WCA4EJA using the plus button at the top. For the prompt, enter something like the following:
+
+For the prompt, enter something like the following:
+
+> Add a MicroProfile Fault Tolerance bulkhead with a maximum of 5 concurrent requests to the forecast method.
+
+Example result:
+
+![](../images/media/bulkhead.png)
+
+Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
+
+If you'd like to learn more about MicroProfile Fault Tolerance in general, we recommend the following Liberty guide: <https://openliberty.io/guides/retry-timeout.html>
+
 ### Conclusion
 
-This completes the lab. We hope this demonstrated how to use GenAI to accelerate Eclipse MicroProfile code generation. As IBM's foundational models improve, everything from implementation, testing, documentation, and more will continue to improve. We encourage you to continue to explore using the preview version of watsonx Code Assistant for Enterprise Java Applications on your own time (free IBMid required to login and access): <https://early-access.ibm.com/software/support/trial/cst/programwebsite.wss?siteId=2044&tabId=5712&p=&h=null>. Work with your IBM Account Team on the best way to access watsonx through IBM Cloud.
+This completes the lab. We hope this demonstrated how to use GenAI to accelerate MicroProfile code generation. As IBM's foundational models improve, everything from implementation, testing, documentation, and more will continue to improve. We encourage you to continue to explore using the preview version of watsonx Code Assistant for Enterprise Java Applications on your own time (free IBMid required to login and access): <https://early-access.ibm.com/software/support/trial/cst/programwebsite.wss?siteId=2044&tabId=5712&p=&h=null>. Work with your IBM Account Team on the best way to access watsonx through IBM Cloud.
 
 # Getting help and troubleshooting
 
@@ -340,6 +394,12 @@ You may see the following response from watsonx:
 > Generated code not shown due to unmet requirements. Please try again.
 
 In some cases, repeating the same prompt will work and in other cases you may need to modify the prompt a little bit to avoid this error.
+
+Work is underway to improve this error and its prevalence for the generally available release of WCA4EJA.
+
+### Error: IBM watsonx Code Assistant for Enterprise Java Applications doesn't support generated code in this programming language.
+
+This can be ignored and will be fixed after the preview version.
 
 ## Getting help
 
