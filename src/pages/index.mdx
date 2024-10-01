@@ -316,11 +316,11 @@ Open `WeatherService.java` in the VS Code editor and select all of the code usin
 
 Start a new chat in WCA using the plus button at the top. For the prompt, enter something like the following:
 
-> Add an MicroProfile Configuration field named baseURL wich a default String value of "https://api.weather.gov/points/" and then use this field in the forecast method.
+> Add an MicroProfile Configuration field named baseURL with a default String value of "https://api.weather.gov/points/" and then use this field in the forecast method.
 
 Example result:
 
-![](../images/media/addconfig.png)
+![](../images/media/addconfig2.png)
 
 Notice that WCA was able to modify the class and augment it with the requested prompt. An additional `import` statement was added, the MicroProfile configuration field was added, and the `forecast` method was modified to use the new field.
 
@@ -340,7 +340,7 @@ Start a new chat in WCA using the plus button at the top. For the prompt, enter 
 
 Example result:
 
-![](../images/media/metrics.png)
+![](../images/media/metrics2.png)
 
 Notice that WCA was able to modify the class and augment it with the requested prompt. Additional `import` statements were added, `@Timed` and `@Counted` annotations were added to the method, and it was smart enough to give different names to the different annotations.
 
@@ -394,15 +394,15 @@ Example result:
 
 ![](../images/media/circuitbreaker.png)
 
+Notice that WCA was able to modify the class and augment it with an additional `import` statement and the `@CircuitBreaker` annotation.
+
 Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
 
-#### Fault tolerance circuit bulkhead
+#### Fault tolerance bulkhead
 
 Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA prompt.
 
 Start a new chat in WCA using the plus button at the top. For the prompt, enter something like the following:
-
-For the prompt, enter something like the following:
 
 > Add a MicroProfile Fault Tolerance bulkhead with a maximum of 5 concurrent requests to the forecast method.
 
@@ -410,9 +410,73 @@ Example result:
 
 ![](../images/media/bulkhead.png)
 
+Notice that WCA was able to modify the class and augment it with an additional `import` statement and the `@Bulkhead` annotation.
+
+Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
+
+#### Fault tolerance retry
+
+Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA prompt.
+
+Start a new chat in WCA using the plus button at the top. For the prompt, enter something like the following:
+
+> Add a MicroProfile Fault Tolerance retry on the forecast method based on TimeoutException.class with a maximum retries of 4 and maximum duration of 10 seconds.
+
+Example result:
+
+![](../images/media/retry.png)
+
+Notice that WCA was able to modify the class and augment it with additional `import` statements and the `@Retry` annotation.
+
 Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
 
 If you'd like to learn more about MicroProfile Fault Tolerance in general, we recommend the following Liberty guide: <https://openliberty.io/guides/retry-timeout.html>
+
+### Generate MicroProfile OpenAPI Documentation
+
+[MicroProfile OpenAPI](https://download.eclipse.org/microprofile/microprofile-open-api-3.1.2/microprofile-openapi-spec-3.1.2.html) (mpOpenAPI) helps you to generate structured documentation from your Jakarta RESTful Services or JAX-RS applications. This documentation helps other microservices and developers to understand and communicate with your application.
+
+Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA prompt.
+
+Start a new chat in WCA using the plus button at the top. For the prompt, enter something like the following:
+
+> Add a MicroProfile @Operation annotation to the forecast method. Also add an @APIResponseSchema annotation to the forecast method for a 200 response code with a value of String.class.
+
+Example result:
+
+![](../images/media/openapi.png)
+
+This is a particularly impressive example of watsonx GenAI because OpenAPI can require very verbose code since it's documentation and watsonx is able to use its Explain capabilities that we demonstrated earlier to generate detailed OpenAPI usage including on a per-parameter level.
+
+Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
+
+If you'd like to learn more about MicroProfile OpenAPI in general, we recommend the following Liberty guide: <https://openliberty.io/guides/microprofile-openapi.html>
+
+### Generate MicroProfile template interfaces
+
+The [MicroProfile Rest Client](https://download.eclipse.org/microprofile/microprofile-rest-client-4.0/microprofile-rest-client-spec-4.0.html) (mpRestClient) provides a type-safe way to call RESTful web services. The remote web service is defined as a Java `interface` and the REST client handles the implementation of the interface on the client side. We will use WCA to convert our web service into an interface and then generate a Rest Client.
+
+Make sure that `WeatherService.java` code is not selected in the editor. We are starting from scratch and do not need to provide any context. Start a new chat in WCA using the plus button at the top. For the prompt, enter something like the following:
+
+> Create a MicroProfile RESTful template interface at the path /weather which uses RegisterRestClient with a key of weatherClient and a base URI of http://localhost:9080/weather and which is AutoCloseable. The interface should have a method named forecast which receives HTTP GET requests and produces a JSON response. The forecast method should take a double latitude and a double longitude as input.
+
+Example result:
+
+![](../images/media/restclient.png)
+
+Notice that WCA was able to create an interface with the `@RegisterRestClient` annotation and the correct method with annotations. This is very similar to the class we created before but this interface may be used as a client for another MicroService.
+
+Now we can build the client application using this interface. For the prompt, enter something like the following:
+
+> Create a Java class called WeatherServiceClient which injects a RestClient using the WeatherService interface and has a method named call which uses RestClientBuilder to call the forecast method and print out the String result.
+
+Example result:
+
+![](../images/media/restclient2.png)
+
+The results aren't quite right as it's missing the CDI annotation to inject the client but the scaffolding still saves significant time.
+
+If you'd like to learn more about MicroProfile Rest Client in general, we recommend the following Liberty guide: <https://openliberty.io/guides/microprofile-rest-client.html>
 
 ### Conclusion
 
