@@ -478,6 +478,26 @@ The results aren't quite right as it's missing the CDI annotation to inject the 
 
 If you'd like to learn more about MicroProfile Rest Client in general, we recommend the following Liberty guide: <https://openliberty.io/guides/microprofile-rest-client.html>
 
+### Generate JSON Web Token support for a microservice
+
+[MicroProfile JWT](https://download.eclipse.org/microprofile/microprofile-jwt-auth-2.1/microprofile-jwt-auth-spec-2.1.html) (mpJwt) provides a standardized way for microservices to use JSON Web Tokens to authenticate users instead of, or in addition to, the configured user registry.
+
+Open `WeatherService.java` in the VS Code editor and select all of the code using your mouse or Ctrl^A. Whatever is selected will be used as context to the WCA prompt.
+
+Start a new chat in WCA using the plus button at the top. For the prompt, enter something like the following:
+
+> Add a field named roles with a MicroProfile JWT Claim annotation with a value of groups. Also add a RolesAllowed annotation to the forecast method that uses the role user.
+
+Example result:
+
+![](../images/media/jwt.png)
+
+Notice that WCA was able to modify the class and augment an additional `import`, a `@RolesAllowed` annotation for authorization and a new parameter named `groups` to the `forecast` method.
+
+Select all of the generated code (there is a copy-to-clipboard button at the top right of the code output) and replace `WeatherService.java` in the file editor.
+
+If you'd like to learn more about MicroProfile JWT in general, we recommend the following Liberty guide: <https://openliberty.io/guides/microprofile-jwt.html>
+
 ### Conclusion
 
 This completes the lab. We hope this demonstrated how to use GenAI to accelerate MicroProfile code generation. As IBM's foundational models improve, everything from implementation, testing, documentation, and more will continue to improve. We encourage you to continue to explore using the preview version of WCA on your own time (free IBMid required to login and access): <https://early-access.ibm.com/software/support/trial/cst/programwebsite.wss?siteId=2044&tabId=5712&p=&h=null>. Work with your IBM Account Team on the best way to access WCA through IBM Cloud.
