@@ -498,6 +498,108 @@ Select all of the generated code (there is a copy-to-clipboard button at the top
 
 If you'd like to learn more about MicroProfile JWT in general, we recommend the following Liberty guide: <https://openliberty.io/guides/microprofile-jwt.html>
 
+### Real World Usage
+
+Now, let's apply the lessons we've learned to more real world usage with a working application.
+
+1. In VS Code, click on the Extensions, search for `java` and click `Install` on the `Extension Pack for Java`:
+   
+   ![](../images/media/javaextension.png)
+    
+1. Wait until the extension shows `Disable` and `Uninstall` meaning it's installed:
+   
+   ![](../images/media/installed.png)
+    
+1. In VS code, open the Terminal window:
+   
+   ![](../images/media/openterminal.png)
+    
+1. Select the `lab` directory as the working directory:
+   
+   ![](../images/media/selectdir.png)
+    
+1. Download a recent version of Apache Maven:
+   ```
+   wget https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip
+   ```
+1. Unzip Apache Maven:
+   ```
+   unzip apache-maven-3.9.9-bin.zip
+   ```
+1. Add Maven to the PATH:
+   ```
+   export PATH=/home/admin/lab/apache-maven-3.9.9/bin/:$PATH
+   ```
+1. Add Java 11 to the PATH:
+   ```
+   export PATH=/usr/lib/jvm/java-11-openjdk-11.0.23.0.9-3.el8.x86_64/bin/:$PATH
+   ```
+1. Update the JAVA_HOME environment variable:
+   ```
+   export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.23.0.9-3.el8.x86_64/
+   ```
+1. Clone the Liberty [Creating a RESTful web service guide](https://openliberty.io/guides/rest-intro.html) repository:
+   ```
+   git clone https://github.com/openliberty/guide-rest-intro.git
+   ```
+
+   Peform this from the newly opened Terminal window in VS Code:
+   
+   ![](../images/media/terminalclone.png)
+    
+1. Change directory to the new clone and into its `finish` directory:
+   ```
+   cd guide-rest-intro/finish
+   ```
+1. Start Liberty dev mode:
+   ```
+   mvn liberty:dev
+   ```
+1. Wait a few minutes until you see the application is ready to be executed:
+   
+   ![](../images/media/appready.png)
+    
+1. Open the `server.xml` file under `lab/guide-rest-intro/finish/src/main/liberty/config`:
+   
+   ![](../images/media/server.png)
+    
+1. Remove the two `feature` lines and add the following line:
+   ```
+         <feature>microProfile-6.1</feature>
+   ```
+1. Open Firefox and then go to this page:
+   ```
+   http://localhost:9080/openapi/ui/
+   ```
+1. You should see a single REST endpoint in the sample application:
+   
+   ![](../images/media/openapi1.png)
+    
+1. Go back to VS Code and expand `lab/guide-rest-intro/finish/src/main/java/io/openliberty/guides`, right click on `rest`, click `New File...`, and enter `HeapResource.java`
+1. Enter the following comment in the file:
+   ```
+   // a resource with a Jakarta REST GET operation to return the Java heap usage
+   ```
+1. Click on View } Command Palette...
+   
+   ![](../images/media/commandpalette.png)
+    
+1. Type `inline suggestion trigger` and then click on the first result
+   
+   ![](../images/media/trigger.png)
+    
+1. WCA will generate code in a light grey text:
+   
+   ![](../images/media/wcatemp.png)
+    
+1. Click the `Tab` key to accept WCA's suggestion:
+1. WCA's suggestion might not fully compile. For example, the package may be incorrect. Select the `package` line, click the light bulb and choose the option to fix the package:
+   
+   ![](../images/media/package.png)
+    
+1. Type `Ctrl+s` to save the file or click File } Save
+1. Switch to Firefox and refresh the OpenAPI page and you should see the new endpoint:
+
 ### Conclusion
 
 This completes the lab. We hope this demonstrated how to use GenAI to accelerate MicroProfile code generation. As IBM's foundational models improve, everything from implementation, testing, documentation, and more will continue to improve. We encourage you to continue to explore using the preview version of WCA on your own time (free IBMid required to login and access): <https://early-access.ibm.com/software/support/trial/cst/programwebsite.wss?siteId=2044&tabId=5712&p=&h=null>. Work with your IBM Account Team on the best way to access WCA through IBM Cloud.
